@@ -1,0 +1,9 @@
+FastAPI
+uvicorn
+SQLAlchemy
+psycopg2-binary
+stripe
+paypalrestsdk
+reportlab
+python-dotenv
+pydantic[email]
