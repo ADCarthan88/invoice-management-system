@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}{{ client.name }} - Invoice System{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-user me-2"></i>{{ client.name }}</h1>
+    <div>
+        <a href="/clients/{{ client.id }}/edit" class="btn btn-outline-primary">
+            <i class="fas fa-edit me-2"></i>Edit Client
+        </a>
+        <a href="/clients" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Clients
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-info-circle me-2"></i>Client Information</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tr>
+                        <td><strong>Name:</strong></td>
+                        <td>{{ client.name }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Email:</strong></td>
+                        <td><a href="mailto:{{ client.email }}">{{ client.email }}</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phone:</strong></td>
+                        <td>{{ client.phone or 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Address:</strong></td>
+                        <td>{{ client.address or 'N/A' }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-file-invoice me-2"></i>Client Invoices</h5>
+            </div>
+            <div class="card-body">
+                {% if client.invoices %}
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for invoice in client.invoices %}
+                            <tr>
+                                <td>#{{ invoice.id }}</td>
+                                <td>${{ "%.2f"|format(invoice.amount) }}</td>
+                                <td>
+                                    <span class="badge bg-{{ 'success' if invoice.paid else 'warning' }}">
+                                        {{ 'Paid' if invoice.paid else 'Pending' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="/invoices/{{ invoice.id }}/pdf" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No invoices found for this client.</p>
+                <a href="/invoices/new?client_id={{ client.id }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Create First Invoice
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

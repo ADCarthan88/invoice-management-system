@@ -7,3 +7,7 @@ paypalrestsdk
 reportlab
 python-dotenv
 pydantic[email]
+APScheduler
+requests
+jinja2
+python-multipart

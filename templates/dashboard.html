@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Invoice System{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h1>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 id="total-clients">{{ stats.clients }}</h4>
+                        <p class="mb-0">Total Clients</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-users fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 id="total-invoices">{{ stats.invoices }}</h4>
+                        <p class="mb-0">Total Invoices</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-file-invoice fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 id="total-revenue">${{ "%.2f"|format(stats.revenue) }}</h4>
+                        <p class="mb-0">Total Revenue</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-dollar-sign fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 id="pending-payments">{{ stats.pending }}</h4>
+                        <p class="mb-0">Pending Invoices</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-clock fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-file-invoice me-2"></i>Recent Invoices</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Client</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-invoices">
+                            {% for invoice in recent_invoices %}
+                            <tr>
+                                <td>#{{ invoice.id }}</td>
+                                <td>{{ invoice.client.name }}</td>
+                                <td>${{ "%.2f"|format(invoice.amount) }}</td>
+                                <td>
+                                    <span class="badge bg-{{ 'success' if invoice.paid else 'warning' }}">
+                                        {{ 'Paid' if invoice.paid else 'Pending' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="/invoices/{{ invoice.id }}/pdf" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-download"></i> PDF
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-plus me-2"></i>Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="/clients/new" class="btn btn-primary">
+                        <i class="fas fa-user-plus me-2"></i>Add New Client
+                    </a>
+                    <a href="/invoices/new" class="btn btn-success">
+                        <i class="fas fa-file-plus me-2"></i>Create Invoice
+                    </a>
+                    <a href="/payments/new" class="btn btn-info">
+                        <i class="fas fa-credit-card me-2"></i>Record Payment
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

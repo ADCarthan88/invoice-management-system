@@ -15,6 +15,9 @@ COPY ./app ./app
 # Copy environment file if needed
 COPY .env .env
 
+# Set PYTHONPATH to include the app directory
+ENV PYTHONPATH=/app
+
 # Expose the port the app runs on
 EXPOSE 8000
 

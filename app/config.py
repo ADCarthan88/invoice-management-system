@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Database
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:password@localhost/dbname")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./invoice_system.db")
 
 # Email settings
 EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
